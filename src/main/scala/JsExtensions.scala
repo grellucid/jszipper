@@ -23,6 +23,13 @@ implicit class JsExtensions(val js: JsValue) extends AnyVal {
     JsZipper(js).findPath(path).root.value
   }
 
+  def lift(path: JsPath): Option[JsValue] = {
+    JsZipper(js).findPath(path) match {
+      case JsZipper.Empty => None
+      case res => Some(res.root.value)
+    }
+  }
+
   def set(pathValues: (JsPath, JsValue)*): JsValue = {
     JsZipper(js).createOrUpdate(pathValues).root.value
   }
